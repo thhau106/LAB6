@@ -34,4 +34,4 @@ as
 	 group by MA_NVIEN
    end
 select * from DEAN
-delete PHANCONG where MA_NVIEN='001'
+delete PHANCONG where MADA=22
