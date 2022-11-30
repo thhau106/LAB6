@@ -1,0 +1,37 @@
+--2\1
+create trigger trg_insertNVb2 on Nhanvien
+after insert
+as
+begin
+ select count(case when upper(Phai)= 'Nam' then 1 end) Nam,
+ count(case when upper(Phai)= N'Nữ' then 1 end) Nữ
+ from NHANVIEN
+end
+
+insert into NHANVIEN
+values('tran', 'thanh', 'huy', '026','1980-12-12', 'Da Nang', N'Nữ', 16000,'004',1)
+select * from NHANVIEN
+--2\2
+create trigger trg_insertNVb2_2 on Nhanvien
+after insert
+as
+begin
+  if update(Phai)
+   begin
+     select count(case when upper(Phai)='Nam' then 1 end) Nam,
+	 count(case when upper(Phai)=N'Nữ' then 1 end) Nữ
+	 from NHANVIEN
+   end
+end
+update NHANVIEN set PHAI ='Nam' where MANV= '024'
+select * from NHANVIEN
+--2\3
+create trigger trg_countDEANb2 on Dean
+after delete
+as
+   begin
+     select MA_NVIEN, count(MADA) as 'so luong' from PHANCONG
+	 group by MA_NVIEN
+   end
+select * from DEAN
+delete PHANCONG where MA_NVIEN='001'
