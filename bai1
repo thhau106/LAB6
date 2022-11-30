@@ -1,0 +1,37 @@
+--1\1
+create trigger trg_insertNV1 on Nhanvien
+for insert
+as
+ if(select luong from inserted)<15000
+  begin
+   print 'luong phai lon hon 15000'
+   rollback transaction
+  end
+select * from NHANVIEN
+insert into NHANVIEN
+values('tran', 'thanh', 'huy','021', '12-12-2020', 'Da Nang', 17000, '004',1)
+--1\2
+create trigger trg_insertNV2 on Nhanvien
+for insert
+as
+  declare @age int
+  set @age = YEAR(GETDATE()) - (select YEAR(Ngsinh) from inserted)
+  if(@age<18 or @age >65)
+   begin
+    print 'tuoi hong hop le'
+	rollback transaction
+   end
+select * from NHANVIEN
+insert into NHANVIEN
+values('tran', 'thanh', 'huy','021', '12-12-2020', 'Da Nang', 17000, '004',1)
+--1\3
+create trigger trg_UpdateNhanvien on Nhanvien
+for update
+as 
+   if(select dchi from inserted) like '%HCM'
+    begin
+	  print ' dia chi khong hop le'
+	  rollback transaction
+    end
+select * from NHANVIEN
+update NHANVIEN set TENNV = 'Namnv' where MANV ='001'
